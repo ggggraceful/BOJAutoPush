@@ -17,11 +17,8 @@ public class Main {
 				index = i + 1; 
 			}
 		}
-
-		sb.append(max)
-				.append("\n")
-				.append(index);
-
-		System.out.println(sb);
+        
+		System.out.println(max);
+        System.out.println(index);
 	}
 }

@@ -11,8 +11,7 @@ public class Main {
 		HashSet<String> set = new HashSet<>();
 
 		for (int i = 0; i < N; i++) {
-			String s = br.readLine();
-			StringTokenizer st = new StringTokenizer(s, " ");
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 			String name = st.nextToken();
 			String state = st.nextToken();
 
@@ -22,15 +21,17 @@ public class Main {
 				set.remove(name);
 			}
 		}
+		
 		ArrayList<String> list = new ArrayList(set);
 		Collections.sort(list);
 
-		for (int i = list.size()-1; i >= 0; i--) {
+		int list_size = list.size();
+		for (int i = list_size - 1; i >= 0; i--) {
 			bw.write(list.get(i) + "\n");
 		}
 
 		br.close();
 		bw.flush();
 		bw.close();
-	}
+    }
 }

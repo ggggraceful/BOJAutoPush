@@ -47,7 +47,6 @@ public class Main {
 		for(int i=1; i<=N; i++) {
 			sb.append(result[i]+"\n");
 		}
-		sb.deleteCharAt(sb.length()-1);
 		System.out.print(sb);
 	}
 	

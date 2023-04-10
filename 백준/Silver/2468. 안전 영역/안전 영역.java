@@ -1,73 +1,75 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    
-    private static final int [] dx = { -1, 1, 0, 0 }; // 상하
-    private static final int [] dy = { 0, 0, -1, 1 }; // 좌우
-    private static int n;
-    private static int [][] map;
-    private static boolean [][] visited;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+	// https://withthemilkyway.tistory.com/24
+	private static final int [] dx = {-1, 1,  0, 0};
+									// 상  하
+	private static final int [] dy = {  0, 0, -1, 1};
+									//         좌  우
+	private static int N;
+	private static int [][] map;
+	private static boolean [][] visited;
 
-        n = Integer.parseInt(br.readLine());
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 
-        map = new int[n][n];
-        visited = new boolean[n][n];
+		N = Integer.parseInt(br.readLine()); // 2차원 배열의 행과 열의 개수
 
-        int max = 0;
-        int min = 100;
+		int max = 0;
+		int min = 100;
 
-        for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(br.readLine());
+		map = new int[N][N];
+		
+		// 2차원 배열을 채워줌
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+				// 최대값
+				max = Math.max(max, map[i][j]);
+				min = Math.min(min, map[i][j]);
+			}
+		}
 
-            for (int j = 0; j < n; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+		visited = new boolean[N][N];
+		int answer = 1;
 
-                max = Math.max(max, map[i][j]);
-                min = Math.min(min, map[i][j]);
-            }
-        }
+		for (int height = max; min <= height; height--) {
+			int count = 0;
+			// 2차원 배열에서
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					// 아직 잠기지 않지만, 방문하지 않은 지점에서 dfs
+					if (map[i][j] > height && !visited[i][j]) {
+						dfs(i, j, height);
+						count++;
+					}
+				}
+			}
 
-        int answer = 1;
+			visited = new boolean[N][N];
+			answer = Math.max(answer, count);
+		}
 
-        for (int height = max; height >= min; height--) {
-            int count = 0;
+		System.out.println(answer);
+	}
 
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (map[i][j] > height && !visited[i][j]) {
-                        dfs(i, j, height);
-                        count++;
-                    }
-                }
-            }
+	private static void dfs(int x, int y, int height) {
+		visited[x][y] = true;
 
-            visited = new boolean[n][n];
-            answer = Math.max(answer, count);
-        }
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
 
-        System.out.println(answer);
-    }
-
-    private static void dfs(int x, int y, int height) {
-        visited[x][y] = true;
-
-        for (int dir = 0; dir < 4; dir++) {
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
-
-            if (nx >= 0 && ny >= 0 && nx < n && ny < n) {
-                if (map[nx][ny] > height && !visited[nx][ny]) {
-                    dfs(nx, ny, height);
-                }
-            }
-        }
-    }
+			if (nx >= 0 && ny >= 0 && nx < N && ny < N) {
+				if (map[nx][ny] > height && !visited[nx][ny]) {
+					dfs(nx, ny, height);
+				}
+			}
+		}
+	}
 
 }
